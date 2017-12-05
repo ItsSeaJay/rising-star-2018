@@ -4,7 +4,6 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     // --------------------------------------------------------------
-
     // The character's running speed
     [SerializeField]
     float m_RunSpeed = 5.0f;
