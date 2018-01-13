@@ -25,16 +25,25 @@ public class Player : MonoBehaviour
         // Turn based on the chosen input axis
         direction += Input.GetAxis(steeringAxis) * torque;
 
+        // Prevent direction overflow
+        if (direction > 360)
+        {
+            direction = 0;
+        }
+        else if (direction < 0)
+        {
+            direction = 360;
+        }
+
         // Update the velocity
         velocity.x = Mathf.Sin(direction);
         velocity.y = Mathf.Cos(direction);
 
+        // Apply rotation
         transform.eulerAngles = new Vector3(
             transform.eulerAngles.x,
             direction,
             transform.eulerAngles.z
         );
-
-        print(direction.ToString());
     }
 }
