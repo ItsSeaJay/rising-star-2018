@@ -22,7 +22,7 @@ public class OffsetScroller : MonoBehaviour
     void Update()
     {
         offset.x += velocity.x * Time.deltaTime;
-        offset.y += velocity.x * Time.deltaTime;
+        offset.y += velocity.y * Time.deltaTime;
 
         rend.sharedMaterial.SetTextureOffset("_MainTex", offset);
     }
@@ -30,5 +30,10 @@ public class OffsetScroller : MonoBehaviour
     void OnDisable()
     {
         rend.sharedMaterial.SetTextureOffset("_MainTex", offset);
+    }
+
+    public void setVelocity(Vector2 velocity)
+    {
+        this.velocity = velocity;
     }
 }
