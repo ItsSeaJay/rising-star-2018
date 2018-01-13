@@ -33,7 +33,7 @@ public class Director : MonoBehaviour
 
         foreach (Transform camera in cameras)
         {
-            distances.Add(camera.gameObject.getInstanceID().ToString(), 0.0f);
+            distances.Add(camera.GetInstanceID().ToString(), 0.0f);
         }
     }
 }
