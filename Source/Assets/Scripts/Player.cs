@@ -18,11 +18,16 @@ public class Player : MonoBehaviour
     private Vector2 velocity;
     private float currentSpeed = 0.0f;
 
+    void Start()
+    {
+        ApplyDirection();
+    }
+
     void Update()
     {
         Steer();
         Accelerate();
-        Translate();
+        ApplyDirection();
     }
 
     private void Steer()
@@ -35,13 +40,6 @@ public class Player : MonoBehaviour
         // Update the velocity
         velocity.x = Mathf.Sin(radians) * currentSpeed;
         velocity.y = Mathf.Cos(radians) * currentSpeed;
-
-        // Apply rotation
-        transform.eulerAngles = new Vector3(
-            transform.eulerAngles.x,
-            direction,
-            transform.eulerAngles.z
-        );
     }
 
     private void Accelerate()
@@ -49,13 +47,13 @@ public class Player : MonoBehaviour
         currentSpeed = Input.GetAxis(accelerationAxis) * maxSpeed;
     }
 
-    private void Translate()
+    private void ApplyDirection()
     {
-        transform.Translate
+        transform.eulerAngles = new Vector3
         (
-            velocity.x * Time.deltaTime,
-            0,
-            velocity.y * Time.deltaTime
+            transform.eulerAngles.x,
+            direction,
+            transform.eulerAngles.z
         );
     }
 
