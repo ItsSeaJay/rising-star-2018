@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private const float maxSpeed = 4.0f;
+    private float maxSpeed = 4.0f;
     [SerializeField]
     private float torque = 2.0f;
     [SerializeField]
@@ -29,19 +29,11 @@ public class Player : MonoBehaviour
         // Turn based on the chosen input axis
         direction += Input.GetAxis(steeringAxis) * torque;
 
-        // Prevent direction overflow
-        if (direction > 360)
-        {
-            direction = 0;
-        }
-        else if (direction < 0)
-        {
-            direction = 360;
-        }
+        float radians = direction * Mathf.Deg2Rad;
 
         // Update the velocity
-        velocity.x = Mathf.Sin(direction) * currentSpeed;
-        velocity.y = Mathf.Cos(direction) * currentSpeed;
+        velocity.x = Mathf.Sin(radians) * currentSpeed;
+        velocity.y = Mathf.Cos(radians) * currentSpeed;
 
         // Apply rotation
         transform.eulerAngles = new Vector3(
