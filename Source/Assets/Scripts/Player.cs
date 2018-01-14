@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     {
         Steer();
         Accelerate();
+        Translate();
     }
 
     private void Steer()
@@ -46,6 +47,16 @@ public class Player : MonoBehaviour
     private void Accelerate()
     {
         currentSpeed = Input.GetAxis(accelerationAxis) * maxSpeed;
+    }
+
+    private void Translate()
+    {
+        transform.Translate
+        (
+            velocity.x * Time.deltaTime,
+            0,
+            velocity.y * Time.deltaTime
+        );
     }
 
     public Vector2 getVelocity()
