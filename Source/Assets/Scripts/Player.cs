@@ -41,8 +41,6 @@ public class Player : MonoBehaviour
         // Update the velocity
         velocity.x = Mathf.Sin(radians) * currentSpeed;
         velocity.y = Mathf.Cos(radians) * currentSpeed;
-
-        Debug.Log(velocity);
     }
 
     private void Accelerate()

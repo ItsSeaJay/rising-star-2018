@@ -29,7 +29,7 @@ public class OffsetScroller : MonoBehaviour
 
     void OnDisable()
     {
-        rend.sharedMaterial.SetTextureOffset("_MainTex", offset);
+        rend.sharedMaterial.SetTextureOffset("_MainTex", Vector2.zero);
     }
 
     public void setVelocity(Vector2 velocity)
