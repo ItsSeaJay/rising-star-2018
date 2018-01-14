@@ -15,9 +15,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private string accelerationAxis = "Vertical_P1";
     [SerializeField]
-    private GameObject bobberPrefab;
-
     private GameObject bobber;
+    
     private Vector2 velocity;
     private float currentSpeed = 0.0f;
     private float range = 64.0f;
@@ -25,8 +24,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         ApplyDirection();
-
-        bobber = Instantiate(bobberPrefab);
+        
         bobber.SetActive(false);
     }
 
