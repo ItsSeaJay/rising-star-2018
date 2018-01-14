@@ -18,10 +18,6 @@ public class SetOffsetFromPlayer : MonoBehaviour
     
     void Update ()
     {
-        offsetScroller.setVelocity
-        (
-            -player.getVelocity().x / 2,
-            -player.getVelocity().y / 2
-        );
+        offsetScroller.setVelocity(-player.GetVelocity() / 2);
 	}
 }

@@ -4,26 +4,43 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
-
+    private enum State
+    {
+        Normal,
+        Curious,
+        Hooked
+    }
 
     [SerializeField]
     private float sight = 4.0f;
     [SerializeField]
     private float radius = 16.0f;
 
+    private State state = State.Normal;
     private bool curious = false;
-    private Transform bobber;
+    private Transform lure;
 
 	void Start ()
     {
-        bobber = GameObject.Find("Bobber").transform;
+        lure = GameObject.Find("Lure").transform;
 	}
 	
 	void Update ()
     {
-        Swim();
-        SearchForLure();
-	}
+        switch (state)
+        {
+            case State.Normal:
+                Swim();
+                SearchForLure();
+                break;
+            case State.Curious:
+                break;
+            case State.Hooked:
+                break;
+            default:
+                break;
+        }
+    }
 
     private void Swim()
     {
@@ -33,19 +50,15 @@ public class Fish : MonoBehaviour
     private void SearchForLure()
     {
         // Calculate vision cone
-        Vector3 targetDir = bobber.position - transform.position;
+        Vector3 targetDir = lure.position - transform.position;
         Vector3 forward = transform.forward;
 
         float angle = Vector3.Angle(targetDir, forward);
-        float distance = Vector3.Distance(transform.position, bobber.position);
+        float distance = Vector3.Distance(transform.position, lure.position);
 
         if (angle < radius && distance < sight)
         {
-            curious = true;
-        }
-        else
-        {
-            curious = false;
+            state = State.Curious;
         }
     }
 }

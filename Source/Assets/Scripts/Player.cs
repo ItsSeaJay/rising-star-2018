@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private string accelerationAxis = "Vertical_P1";
     [SerializeField]
-    private GameObject bobber;
+    private Lure lure;
     
     private Vector2 velocity;
     private float currentSpeed = 0.0f;
@@ -24,8 +24,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         ApplyDirection();
-        
-        bobber.SetActive(false);
     }
 
     void Update()
@@ -34,7 +32,18 @@ public class Player : MonoBehaviour
         Accelerate();
         ApplyDirection();
         Translate();
-        CastBobber();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!lure.GetCast())
+            {
+                Cast();
+            }
+            else
+            {
+                Reel();
+            }
+        }
     }
 
     private void Steer()
@@ -69,29 +78,24 @@ public class Player : MonoBehaviour
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
     }
 
-    private void CastBobber()
+    private void Cast()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, range))
-            {
-                if (!bobber.activeInHierarchy)
-                {
-                    bobber.transform.position = hit.point;
-                    bobber.SetActive(true);
-                }
-                else
-                {
-                    bobber.SetActive(false);
-                }
-            }
+        if (Physics.Raycast(ray, out hit, range))
+        {
+            lure.transform.position = hit.point;
+            lure.SetCast(true);
         }
     }
 
-    public Vector2 getVelocity()
+    private void Reel()
+    {
+        lure.SetCast(false);
+    }
+
+    public Vector2 GetVelocity()
     {
         return velocity;
     }
