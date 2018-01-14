@@ -19,7 +19,7 @@ public class Fish : MonoBehaviour
 	
 	void Update ()
     {
-        // Swim();
+        Swim();
         SearchForLure();
 
         if (curious)
