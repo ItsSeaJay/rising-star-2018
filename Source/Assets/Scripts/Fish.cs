@@ -34,6 +34,7 @@ public class Fish : MonoBehaviour
                 SearchForLure();
                 break;
             case State.Curious:
+                SearchForLure();
                 break;
             case State.Hooked:
                 break;
@@ -59,6 +60,10 @@ public class Fish : MonoBehaviour
         if (angle < radius && distance < sight)
         {
             state = State.Curious;
+        }
+        else
+        {
+            state = State.Normal;
         }
     }
 }
