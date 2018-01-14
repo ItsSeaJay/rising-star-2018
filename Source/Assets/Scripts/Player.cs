@@ -14,13 +14,20 @@ public class Player : MonoBehaviour
     private string steeringAxis = "Horizontal_P1";
     [SerializeField]
     private string accelerationAxis = "Vertical_P1";
+    [SerializeField]
+    private GameObject bobberPrefab;
 
+    private GameObject bobber;
     private Vector2 velocity;
     private float currentSpeed = 0.0f;
+    private float range = 64.0f;
 
     void Start()
     {
         ApplyDirection();
+
+        bobber = Instantiate(bobberPrefab);
+        bobber.SetActive(false);
     }
 
     void Update()
@@ -29,6 +36,7 @@ public class Player : MonoBehaviour
         Accelerate();
         ApplyDirection();
         Translate();
+        CastBobber();
     }
 
     private void Steer()
@@ -61,6 +69,28 @@ public class Player : MonoBehaviour
     private void Translate()
     {
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+    }
+
+    private void CastBobber()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, range))
+            {
+                if (!bobber.activeInHierarchy)
+                {
+                    bobber.transform.position = hit.point;
+                    bobber.SetActive(true);
+                }
+                else
+                {
+                    bobber.SetActive(false);
+                }
+            }
+        }
     }
 
     public Vector2 getVelocity()
