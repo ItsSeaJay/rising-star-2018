@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
+
+
     [SerializeField]
     private float sight = 4.0f;
     [SerializeField]
@@ -21,11 +23,6 @@ public class Fish : MonoBehaviour
     {
         Swim();
         SearchForLure();
-
-        if (curious)
-        {
-            print("George");
-        }
 	}
 
     private void Swim()
