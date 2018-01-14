@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
         Steer();
         Accelerate();
         ApplyDirection();
+        Translate();
     }
 
     private void Steer()
@@ -40,6 +41,8 @@ public class Player : MonoBehaviour
         // Update the velocity
         velocity.x = Mathf.Sin(radians) * currentSpeed;
         velocity.y = Mathf.Cos(radians) * currentSpeed;
+
+        Debug.Log(velocity);
     }
 
     private void Accelerate()
@@ -55,6 +58,11 @@ public class Player : MonoBehaviour
             direction,
             transform.eulerAngles.z
         );
+    }
+
+    private void Translate()
+    {
+        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
     }
 
     public Vector2 getVelocity()

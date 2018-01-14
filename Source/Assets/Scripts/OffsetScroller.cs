@@ -36,4 +36,10 @@ public class OffsetScroller : MonoBehaviour
     {
         this.velocity = velocity;
     }
+
+    public void setVelocity(float x, float y)
+    {
+        this.velocity.x = x;
+        this.velocity.y = y;
+    }
 }
