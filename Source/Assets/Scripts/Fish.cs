@@ -36,9 +36,7 @@ public class Fish : MonoBehaviour
         switch (state)
         {
             case State.Normal:
-                Vector3 direction = transform.position + (Vector3.forward);
-
-                //Swim();
+                Swim();
                 SearchForLure();
                 break;
             case State.Curious:
@@ -55,7 +53,7 @@ public class Fish : MonoBehaviour
 
     protected void Swim()
     {
-        transform.Translate(0, 0, 1 * Time.deltaTime);
+        transform.Translate(0, 0, 1 * speed * Time.deltaTime);
     }
 
     private void SearchForLure()
@@ -69,7 +67,7 @@ public class Fish : MonoBehaviour
             float angle = Vector3.Angle(targetDir, forward);
             float distance = Vector3.Distance(transform.position, lure.transform.position);
 
-            if (angle < radius && distance < sight)
+            if (angle < radius)
             {
                 state = State.Curious;
             }

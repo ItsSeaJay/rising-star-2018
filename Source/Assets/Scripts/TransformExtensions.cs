@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class TransformExt
+public static class TransformExtensions
 {
-  public static void LookAtXZ(this Transform transform, Transform target)
-  {
-    LookAtXZ(transform, target.position);
-  }
+    public static void LookAtXZ(this Transform transform, Transform target)
+    {
+        LookAtXZ(transform, target.position);
+    }
 
-  public static void LookAtXZ(this Transform transform, Vector3 target)
-  {
-    Vector3 p;
+    public static void LookAtXZ(this Transform transform, Vector3 target)
+    {
+        Vector3 position;
 
-    p = target - transform.position;
-    p = p.normalized;
+        position = target - transform.position;
+        position.y = 0;
+        position = position.normalized;
 
-    transform.forward = p;
-  }
+        transform.forward = position;
+    }
 }
