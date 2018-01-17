@@ -93,6 +93,7 @@ public class Player : MonoBehaviour
     private void Reel()
     {
         lure.SetCast(false);
+        lure.transform.position = transform.position;
     }
 
     public Vector2 GetVelocity()
