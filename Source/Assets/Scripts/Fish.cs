@@ -17,6 +17,8 @@ public class Fish : MonoBehaviour
     private float radius = 16.0f;
     [SerializeField]
     private float speed = 1.0f;
+    [SerializeField]
+    private int nibbles = 1;
 
     private State state = State.Normal;
     private Lure lure;
@@ -45,6 +47,10 @@ public class Fish : MonoBehaviour
                 transform.LookAtXZ(lure.transform);
                 break;
             case State.Hooked:
+                if (Input.GetMouseButtonDown(0))
+                {
+                    enabled = false;
+                }
                 break;
             default:
                 break;
@@ -58,7 +64,7 @@ public class Fish : MonoBehaviour
 
     private void SearchForLure()
     {
-        if (lure.GetCast())
+        if (lure.enabled)
         {
             // Calculate vision cone
             Vector3 targetDir = lure.transform.position - transform.position;
@@ -74,6 +80,17 @@ public class Fish : MonoBehaviour
             else
             {
                 state = State.Normal;
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (lure.enabled)
+        {
+            if (other.tag == "Hook")
+            {
+                state = State.Hooked;
             }
         }
     }

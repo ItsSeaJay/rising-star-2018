@@ -85,7 +85,9 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, range))
         {
-            lure.transform.position = hit.point;
+            Vector3 hitPosition = hit.point;
+            lure.transform.position = hitPosition;
+
             lure.SetCast(true);
         }
     }
