@@ -49,7 +49,7 @@ public class Fish : MonoBehaviour
             case State.Hooked:
                 if (Input.GetMouseButtonDown(0))
                 {
-                    enabled = false;
+                    gameObject.SetActive(false);
                 }
                 break;
             default:
