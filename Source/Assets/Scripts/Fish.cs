@@ -14,13 +14,6 @@ public class Fish : MonoBehaviour
     }
 
     [System.Serializable]
-    private struct RecoilTime
-    {
-        public float min;
-        public float max;
-    }
-
-    [System.Serializable]
     private struct VisionCone
     {
         public float length;
@@ -28,18 +21,26 @@ public class Fish : MonoBehaviour
     }
 
     [SerializeField]
+    private string species = "Dopefish";
+    [SerializeField]
     private VisionCone visionCone;
     [SerializeField]
-    private RecoilTime recoilTime;
+    private Range recoilTime;
+    [SerializeField]
+    private float biteTime = 1.0f;
     [SerializeField]
     private float speed = 1.0f;
     [SerializeField]
     private float acceleration = 0.33f;
     [SerializeField]
+    private float chi;
+    [SerializeField]
+    [Tooltip("How many times the fish will approach the lure before biting.")]
     private int nibbles = 1;
 
     private float velocity = 0;
     private float recoilTimer = 0;
+    private float biteTimer = 0;
     private State state = State.Normal;
     private Lure lure;
 
@@ -65,7 +66,7 @@ public class Fish : MonoBehaviour
         HandleState();
     }
 
-    protected virtual void HandleState()
+    private void HandleState()
     {
         switch (state)
         {
@@ -89,13 +90,21 @@ public class Fish : MonoBehaviour
                 }
                 break;
             case State.Hooked:
+                biteTimer = Mathf.Max(0, biteTimer - Time.deltaTime);
+
                 if (Input.GetMouseButtonDown(0))
                 {
                     gameObject.SetActive(false);
                 }
+
+                if (biteTimer == 0)
+                {
+                    // The player failed to catch the fish in time
+                    state = State.Dive;
+                }
                 break;
             case State.Dive:
-
+                transform.Translate(0, -1 * Time.deltaTime, 0);
                 break;
             default:
                 break;
@@ -154,6 +163,7 @@ public class Fish : MonoBehaviour
                 else
                 {
                     state = State.Hooked;
+                    biteTimer = biteTime;
                 }
             }
         }
