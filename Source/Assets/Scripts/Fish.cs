@@ -8,23 +8,55 @@ public class Fish : MonoBehaviour
     {
         Normal,
         Curious,
-        Hooked
+        Recoil,
+        Hooked,
+        Dive
+    }
+
+    [System.Serializable]
+    private struct RecoilTime
+    {
+        public float min;
+        public float max;
+    }
+
+    [System.Serializable]
+    private struct VisionCone
+    {
+        public float length;
+        public float radius;
     }
 
     [SerializeField]
-    private float sight = 4.0f;
+    private VisionCone visionCone;
     [SerializeField]
-    private float radius = 16.0f;
+    private RecoilTime recoilTime;
     [SerializeField]
     private float speed = 1.0f;
     [SerializeField]
+    private float acceleration = 0.33f;
+    [SerializeField]
     private int nibbles = 1;
 
+    private float velocity = 0;
+    private float recoilTimer = 0;
     private State state = State.Normal;
     private Lure lure;
 
 	void Start ()
     {
+        Debug.Assert
+        (
+            recoilTime.max > recoilTime.min,
+            name + "'s recoil time maximum must be greater than the minimum."
+        );
+
+        Debug.Assert
+        (
+            visionCone.length > 0,
+            name + "'s vision cone length cannot be negative."
+        );
+
         lure = GameObject.Find("Lure").GetComponent<Lure>();
 	}
 	
@@ -46,20 +78,42 @@ public class Fish : MonoBehaviour
                 SearchForLure();
                 transform.LookAtXZ(lure.transform);
                 break;
+            case State.Recoil:
+                recoilTimer = Mathf.Max(0, recoilTimer - Time.deltaTime);
+                Recoil();
+                transform.LookAtXZ(lure.transform);
+
+                if (recoilTimer == 0)
+                {
+                    state = State.Curious;
+                }
+                break;
             case State.Hooked:
                 if (Input.GetMouseButtonDown(0))
                 {
                     gameObject.SetActive(false);
                 }
                 break;
+            case State.Dive:
+
+                break;
             default:
                 break;
         }
     }
 
-    protected void Swim()
+    private void Swim()
     {
-        transform.Translate(0, 0, 1 * speed * Time.deltaTime);
+        velocity = Mathf.Min(speed, velocity + acceleration * Time.deltaTime);
+
+        transform.Translate(0, 0, 1 * velocity * Time.deltaTime);
+    }
+
+    private void Recoil()
+    {
+        velocity = Mathf.Max(-speed, velocity - acceleration * Time.deltaTime);
+
+        transform.Translate(0, 0, 1 * velocity * Time.deltaTime);
     }
 
     private void SearchForLure()
@@ -73,7 +127,7 @@ public class Fish : MonoBehaviour
             float angle = Vector3.Angle(targetDir, forward);
             float distance = Vector3.Distance(transform.position, lure.transform.position);
 
-            if (angle < radius)
+            if (angle < visionCone.radius)
             {
                 state = State.Curious;
             }
@@ -90,7 +144,17 @@ public class Fish : MonoBehaviour
         {
             if (other.tag == "Hook")
             {
-                state = State.Hooked;
+                if (nibbles > 0)
+                {
+                    state = State.Recoil;
+                    velocity = 0;
+                    recoilTimer = Random.Range(recoilTime.min, recoilTime.max);
+                    --nibbles;
+                }
+                else
+                {
+                    state = State.Hooked;
+                }
             }
         }
     }
