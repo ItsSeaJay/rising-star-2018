@@ -33,8 +33,6 @@ public class Fish : MonoBehaviour
     [SerializeField]
     private float acceleration = 0.33f;
     [SerializeField]
-    private float chi;
-    [SerializeField]
     [Tooltip("How many times the fish will approach the lure before biting.")]
     private int nibbles = 1;
 
@@ -107,6 +105,13 @@ public class Fish : MonoBehaviour
                 transform.Translate(0, -1 * Time.deltaTime, 0);
                 break;
             default:
+                Debug.LogError
+                (
+                    species + 
+                    ' ' + 
+                    name + 
+                    "'s finite state machine broke!"
+                );
                 break;
         }
     }
