@@ -64,7 +64,7 @@ public class Fish : MonoBehaviour
 
     private void SearchForLure()
     {
-        if (lure.enabled)
+        if (lure.GetCast())
         {
             // Calculate vision cone
             Vector3 targetDir = lure.transform.position - transform.position;
@@ -86,7 +86,7 @@ public class Fish : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (lure.enabled)
+        if (lure.GetCast())
         {
             if (other.tag == "Hook")
             {
