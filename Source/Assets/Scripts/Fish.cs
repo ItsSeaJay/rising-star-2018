@@ -40,7 +40,6 @@ public class Fish : MonoBehaviour
     private float recoilTimer = 0;
     private float biteTimer = 0;
     private State state = State.Normal;
-    private Lure lure;
 
 	void Start ()
     {
@@ -55,8 +54,6 @@ public class Fish : MonoBehaviour
             visionCone.length > 0,
             name + "'s vision cone length cannot be negative."
         );
-
-        lure = GameObject.Find("Lure").GetComponent<Lure>();
 	}
 	
 	void Update ()
@@ -75,12 +72,12 @@ public class Fish : MonoBehaviour
             case State.Curious:
                 Swim();
                 SearchForLure();
-                transform.LookAtXZ(lure.transform);
+                transform.LookAtXZ(Lure.GetInstance().transform);
                 break;
             case State.Recoil:
                 recoilTimer = Mathf.Max(0, recoilTimer - Time.deltaTime);
                 Recoil();
-                transform.LookAtXZ(lure.transform);
+                transform.LookAtXZ(Lure.GetInstance().transform);
 
                 if (recoilTimer == 0)
                 {
@@ -90,16 +87,12 @@ public class Fish : MonoBehaviour
             case State.Hooked:
                 biteTimer = Mathf.Max(0, biteTimer - Time.deltaTime);
 
-                if (Input.GetMouseButtonDown(0))
-                {
-                    gameObject.SetActive(false);
-                }
-
                 if (biteTimer == 0)
                 {
                     // The player failed to catch the fish in time
                     state = State.Dive;
                 }
+
                 break;
             case State.Dive:
                 transform.Translate(0, -1 * Time.deltaTime, 0);
@@ -132,14 +125,15 @@ public class Fish : MonoBehaviour
 
     private void SearchForLure()
     {
-        if (lure.GetCast())
+        if (Lure.GetInstance().GetCast())
         {
             // Calculate vision cone
-            Vector3 targetDir = lure.transform.position - transform.position;
+            Vector3 lurePosition = Lure.GetInstance().transform.position;
+            Vector3 targetDirection = lurePosition - transform.position;
             Vector3 forward = transform.forward;
 
-            float angle = Vector3.Angle(targetDir, forward);
-            float distance = Vector3.Distance(transform.position, lure.transform.position);
+            float angle = Vector3.Angle(targetDirection, forward);
+            float distance = Vector3.Distance(transform.position, Lure.GetInstance().transform.position);
 
             if (angle < visionCone.radius)
             {
@@ -154,7 +148,7 @@ public class Fish : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (lure.GetCast())
+        if (Lure.GetInstance().GetCast())
         {
             if (other.tag == "Hook")
             {

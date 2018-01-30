@@ -7,8 +7,22 @@ public class Lure : MonoBehaviour
     [SerializeField]
     private Player player;
 
+    private static Lure instance;
+
     private MeshRenderer mesh;
     private bool cast = false;
+
+    void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     void Start()
     {
@@ -24,15 +38,16 @@ public class Lure : MonoBehaviour
             transform.position,
             player.transform.position
         );
+    }
 
-        if (cast)
-        {
+    void Catch()
+    {
 
-        }
-        else
-        {
+    }
 
-        }
+    public static Lure GetInstance()
+    {
+        return instance;
     }
 
     public bool GetCast()
