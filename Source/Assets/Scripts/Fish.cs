@@ -42,7 +42,10 @@ public class Fish : MonoBehaviour
     private float biteTimer = 0;
     private State state = State.Normal;
 
-	void Start ()
+    public delegate void Notify();
+    public static event Notify onBite;
+
+    void Start ()
     {
         Debug.Assert
         (
@@ -56,7 +59,7 @@ public class Fish : MonoBehaviour
             name + "'s vision cone length cannot be negative."
         );
 
-        material = GetComponent<Material>();
+        material = GetComponent<Renderer>().material;
 	}
 	
 	void Update ()
@@ -103,13 +106,21 @@ public class Fish : MonoBehaviour
                 break;
             case State.Dive:
                 transform.Translate(0, -1 * Time.deltaTime, 0);
+
+                material.color = new Vector4
+                (
+                    material.color.r,
+                    material.color.g,
+                    material.color.b,
+                    Mathf.Lerp(material.color.a, 0, 1.0f * Time.deltaTime)
+                );
                 break;
             default:
                 Debug.LogError
                 (
                     species + 
                     ' ' + 
-                    name + 
+                    GetInstanceID().ToString() + 
                     "'s finite state machine broke!"
                 );
                 break;
