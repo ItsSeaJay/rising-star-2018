@@ -9,8 +9,10 @@ public class Lure : MonoBehaviour
 
     private static Lure instance;
 
+    private Fish fish;
     private MeshRenderer mesh;
     private bool cast = false;
+    private bool hooked = false;
 
     void Awake()
     {
@@ -40,14 +42,20 @@ public class Lure : MonoBehaviour
         );
     }
 
-    void Catch()
-    {
-
-    }
-
     public static Lure GetInstance()
     {
         return instance;
+    }
+
+    public Fish GetFish()
+    {
+        return this.fish;
+    }
+
+    public void SetFish(Fish fish)
+    {
+        this.fish = fish;
+        Debug.Log(this.fish.GetSpecies());
     }
 
     public bool GetCast()

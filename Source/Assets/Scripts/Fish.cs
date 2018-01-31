@@ -36,6 +36,7 @@ public class Fish : MonoBehaviour
     [Tooltip("How many times the fish will approach the lure before biting.")]
     private int nibbles = 1;
 
+    private Material material;
     private float velocity = 0;
     private float recoilTimer = 0;
     private float biteTimer = 0;
@@ -54,6 +55,8 @@ public class Fish : MonoBehaviour
             visionCone.length > 0,
             name + "'s vision cone length cannot be negative."
         );
+
+        material = GetComponent<Material>();
 	}
 	
 	void Update ()
@@ -85,6 +88,11 @@ public class Fish : MonoBehaviour
                 }
                 break;
             case State.Hooked:
+                if (Lure.GetInstance().GetFish() == null)
+                {
+                    Lure.GetInstance().SetFish(this);
+                }
+
                 biteTimer = Mathf.Max(0, biteTimer - Time.deltaTime);
 
                 if (biteTimer == 0)
@@ -92,7 +100,6 @@ public class Fish : MonoBehaviour
                     // The player failed to catch the fish in time
                     state = State.Dive;
                 }
-
                 break;
             case State.Dive:
                 transform.Translate(0, -1 * Time.deltaTime, 0);
@@ -121,6 +128,16 @@ public class Fish : MonoBehaviour
         velocity = Mathf.Max(-speed, velocity - acceleration * Time.deltaTime);
 
         transform.Translate(0, 0, 1 * velocity * Time.deltaTime);
+    }
+
+    private void Bite()
+    {
+        // TODO: Implement biting
+    }
+
+    private void Escape()
+    {
+        // TODO: Implement escaping from the lure
     }
 
     private void SearchForLure()
@@ -166,5 +183,10 @@ public class Fish : MonoBehaviour
                 }
             }
         }
+    }
+
+    public string GetSpecies()
+    {
+        return this.species;
     }
 }

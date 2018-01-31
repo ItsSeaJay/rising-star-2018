@@ -60,7 +60,8 @@ public class Player : MonoBehaviour
 
     private void Accelerate()
     {
-        currentSpeed = Input.GetAxis(accelerationAxis) * maxSpeed;
+        // Don't allow the player to reverse
+        currentSpeed = Mathf.Max(Input.GetAxis(accelerationAxis), 0) * maxSpeed;
     }
 
     private void ApplyDirection()
