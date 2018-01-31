@@ -15,8 +15,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private string accelerationAxis = "Vertical_P1";
     [SerializeField]
+    private string fishingButton = "Fire1";
+    [SerializeField]
     private Lure lure;
-    
+
+    private List<Fish> hold;
     private Vector2 velocity;
     private float currentSpeed = 0.0f;
     private float range = 64.0f;
@@ -33,7 +36,7 @@ public class Player : MonoBehaviour
         ApplyDirection();
         Translate();
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetButtonDown(fishingButton))
         {
             if (!lure.GetCast())
             {
@@ -95,8 +98,24 @@ public class Player : MonoBehaviour
 
     private void Reel()
     {
+        if (lure.GetFish() != null)
+        {
+            DebugHold();
+            hold.Add(lure.GetFish());
+            lure.GetFish().gameObject.SetActive(false);
+            lure.SetFish(null);
+        }
+
         lure.SetCast(false);
         lure.transform.position = transform.position;
+    }
+
+    private void DebugHold()
+    {
+        foreach (Fish fish in hold)
+        {
+            Debug.Log(fish.GetSpecies());
+        }
     }
 
     public Vector2 GetVelocity()

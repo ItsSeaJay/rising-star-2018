@@ -91,10 +91,7 @@ public class Fish : MonoBehaviour
                 }
                 break;
             case State.Hooked:
-                if (Lure.GetInstance().GetFish() == null)
-                {
-                    Lure.GetInstance().SetFish(this);
-                }
+                Bite();
 
                 biteTimer = Mathf.Max(0, biteTimer - Time.deltaTime);
 
@@ -106,14 +103,6 @@ public class Fish : MonoBehaviour
                 break;
             case State.Dive:
                 transform.Translate(0, -1 * Time.deltaTime, 0);
-
-                material.color = new Vector4
-                (
-                    material.color.r,
-                    material.color.g,
-                    material.color.b,
-                    Mathf.Lerp(material.color.a, 0, 1.0f * Time.deltaTime)
-                );
                 break;
             default:
                 Debug.LogError
@@ -143,17 +132,16 @@ public class Fish : MonoBehaviour
 
     private void Bite()
     {
-        // TODO: Implement biting
-    }
-
-    private void Escape()
-    {
-        // TODO: Implement escaping from the lure
+        if (Lure.GetInstance().GetFish() == null)
+        {
+            Lure.GetInstance().SetFish(this);
+        }
     }
 
     private void SearchForLure()
     {
-        if (Lure.GetInstance().GetCast())
+        if (Lure.GetInstance().GetCast() && 
+            Lure.GetInstance().GetFish() == null)
         {
             // Calculate vision cone
             Vector3 lurePosition = Lure.GetInstance().transform.position;
@@ -174,7 +162,7 @@ public class Fish : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (Lure.GetInstance().GetCast())
         {

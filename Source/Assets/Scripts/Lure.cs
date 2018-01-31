@@ -29,8 +29,6 @@ public class Lure : MonoBehaviour
     void Start()
     {
         mesh = GetComponent<MeshRenderer>();
-
-        Fish.onBite += Hook;
     }
 
     void Update()
@@ -47,22 +45,6 @@ public class Lure : MonoBehaviour
     public static Lure GetInstance()
     {
         return instance;
-    }
-
-    public void Hook()
-    {
-        if (!this.hooked)
-        {
-            this.hooked = true;
-        }
-    }
-
-    public void Unhook()
-    {
-        if (this.hooked)
-        {
-            this.hooked = false;
-        }
     }
 
     public Fish GetFish()
