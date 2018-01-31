@@ -40,6 +40,7 @@ public class Fish : MonoBehaviour
     private float velocity = 0;
     private float recoilTimer = 0;
     private float biteTimer = 0;
+    private bool bitten = false;
     private State state = State.Normal;
 
     public delegate void Notify();
@@ -91,8 +92,6 @@ public class Fish : MonoBehaviour
                 }
                 break;
             case State.Hooked:
-                Bite();
-
                 biteTimer = Mathf.Max(0, biteTimer - Time.deltaTime);
 
                 if (biteTimer == 0)
@@ -135,6 +134,14 @@ public class Fish : MonoBehaviour
         transform.Translate(0, 0, 1 * velocity * Time.deltaTime);
     }
 
+    private void Nibble()
+    {
+        state = State.Recoil;
+        velocity = 0;
+        recoilTimer = Random.Range(recoilTime.min, recoilTime.max);
+        nibbles = Mathf.Max(nibbles - 1, 0);
+    }
+
     private void Bite()
     {
         state = State.Hooked;
@@ -142,11 +149,8 @@ public class Fish : MonoBehaviour
 
         Lure.GetInstance().SetFish(this);
         Lure.GetInstance().SetHooked(true);
-    }
 
-    private void Escape()
-    {
-        Lure.GetInstance().SetHooked(false);
+        bitten = true;
     }
 
     private void SearchForLure()
@@ -181,14 +185,14 @@ public class Fish : MonoBehaviour
             {
                 if (nibbles > 0)
                 {
-                    state = State.Recoil;
-                    velocity = 0;
-                    recoilTimer = Random.Range(recoilTime.min, recoilTime.max);
-                    --nibbles;
+                    Nibble();
                 }
                 else
                 {
-                    Bite();
+                    if (!bitten)
+                    {
+                        Bite();
+                    }
                 }
             }
         }
