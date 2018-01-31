@@ -55,7 +55,6 @@ public class Lure : MonoBehaviour
     public void SetFish(Fish fish)
     {
         this.fish = fish;
-        Debug.Log(this.fish.GetSpecies());
     }
 
     public bool GetCast()
@@ -66,5 +65,15 @@ public class Lure : MonoBehaviour
     public void SetCast(bool cast)
     {
         this.cast = cast;
+    }
+
+    public bool GetHooked()
+    {
+        return this.hooked;
+    }
+
+    public void SetHooked(bool hooked)
+    {
+        this.hooked = hooked;
     }
 }

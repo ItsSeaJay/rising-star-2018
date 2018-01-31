@@ -102,6 +102,11 @@ public class Fish : MonoBehaviour
                 }
                 break;
             case State.Dive:
+                if (Lure.GetInstance().GetHooked())
+                {
+                    Lure.GetInstance().SetHooked(false);
+                }
+
                 transform.Translate(0, -1 * Time.deltaTime, 0);
                 break;
             default:
@@ -132,16 +137,21 @@ public class Fish : MonoBehaviour
 
     private void Bite()
     {
-        if (Lure.GetInstance().GetFish() == null)
-        {
-            Lure.GetInstance().SetFish(this);
-        }
+        state = State.Hooked;
+        biteTimer = biteTime;
+
+        Lure.GetInstance().SetFish(this);
+        Lure.GetInstance().SetHooked(true);
+    }
+
+    private void Escape()
+    {
+        Lure.GetInstance().SetHooked(false);
     }
 
     private void SearchForLure()
     {
-        if (Lure.GetInstance().GetCast() && 
-            Lure.GetInstance().GetFish() == null)
+        if (Lure.GetInstance().GetCast())
         {
             // Calculate vision cone
             Vector3 lurePosition = Lure.GetInstance().transform.position;
@@ -164,7 +174,8 @@ public class Fish : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (Lure.GetInstance().GetCast())
+        if (Lure.GetInstance().GetCast() &&
+            state == State.Curious)
         {
             if (other.tag == "Hook")
             {
@@ -177,8 +188,7 @@ public class Fish : MonoBehaviour
                 }
                 else
                 {
-                    state = State.Hooked;
-                    biteTimer = biteTime;
+                    Bite();
                 }
             }
         }

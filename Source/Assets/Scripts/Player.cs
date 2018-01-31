@@ -11,9 +11,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float direction = 0.0f;
     [SerializeField]
-    private string steeringAxis = "Horizontal_P1";
+    private string steeringAxis = "Horizontal";
     [SerializeField]
-    private string accelerationAxis = "Vertical_P1";
+    private string accelerationAxis = "Vertical";
     [SerializeField]
     private string fishingButton = "Fire1";
     [SerializeField]
@@ -98,14 +98,11 @@ public class Player : MonoBehaviour
 
     private void Reel()
     {
-        if (lure.GetFish() != null)
+        if (Lure.GetInstance().GetHooked())
         {
-            DebugHold();
-            hold.Add(lure.GetFish());
-            lure.GetFish().gameObject.SetActive(false);
-            lure.SetFish(null);
+            Lure.GetInstance().GetFish().gameObject.SetActive(false);
         }
-
+        
         lure.SetCast(false);
         lure.transform.position = transform.position;
     }
