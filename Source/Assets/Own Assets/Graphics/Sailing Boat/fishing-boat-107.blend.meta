@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: d9751fe7919bc96409daa90f23a65f07
-timeCreated: 1517673767
+guid: 7c47692ff02ce0b4da7ab20bd64626c4
+timeCreated: 1517680000
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -17,7 +17,7 @@ ModelImporter:
     400006: Mast
     400008: Rudder
     400010: Sail
-    2100000: None__fishing-boat-sail-uv_001_png
+    2100000: unnamed
     2100002: None__fishing-boat-hatch-uv_001_png
     2100004: None__fishing-boat-rudder-uv_001_png
     2100006: None__fishing-boat-mast-uv_001_png
