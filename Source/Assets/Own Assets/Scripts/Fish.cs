@@ -20,23 +20,22 @@ public class Fish : MonoBehaviour
         public float length;
         public float radius;
     }
-
-    [SerializeField]
-    private Species species;
+    
     [SerializeField]
     private VisionCone visionCone;
     [SerializeField]
     private Range recoilTime;
 
     private Material material;
+    private Species species;
+
     private float velocity = 0;
     private float recoilTimer = 0;
     private float biteTimer = 0;
+    private float nibbles;
     private bool bitten = false;
-    private State state = State.Normal;
 
-    public delegate void Notify();
-    public static event Notify onBite;
+    private State state = State.Normal;
 
     void Start ()
     {
@@ -54,6 +53,8 @@ public class Fish : MonoBehaviour
 
         species = GetComponent<Species>();
         material = GetComponent<Renderer>().material;
+
+        nibbles = species.GetNibbles().max;
 	}
 	
 	void Update ()
@@ -140,7 +141,7 @@ public class Fish : MonoBehaviour
         state = State.Recoil;
         velocity = 0;
         recoilTimer = Random.Range(recoilTime.min, recoilTime.max);
-        species.SetNibbles(Mathf.Max(species.GetNibbles() - 1, 0));
+        nibbles = Mathf.Max(nibbles - 1, 0);
     }
 
     private void Bite()
@@ -184,7 +185,7 @@ public class Fish : MonoBehaviour
         {
             if (other.tag == "Hook")
             {
-                if (species.GetNibbles() > 0)
+                if (nibbles > 0)
                 {
                     Nibble();
                 }

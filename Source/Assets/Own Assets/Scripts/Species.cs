@@ -40,13 +40,8 @@ public class Species : MonoBehaviour
         return this.acceleration;
     }
 
-    public float GetNibbles()
+    public Range GetNibbles()
     {
-        return this.nibbles.current;
-    }
-
-    public void SetNibbles(float nibbles)
-    {
-        this.nibbles.current = nibbles;
+        return this.nibbles;
     }
 }

@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Lure lure;
 
-    private List<Fish> hold;
+    private List<Species> hold;
     private Vector2 velocity;
     private float currentSpeed = 0.0f;
     private float range = 64.0f;
@@ -100,9 +100,15 @@ public class Player : MonoBehaviour
     {
         if (Lure.GetInstance().GetHooked())
         {
-            Lure.GetInstance().GetFish().gameObject.SetActive(false);
+            Fish fish = Lure.GetInstance().GetFish();
+            Species species = fish.GetSpecies();
+
+
+
+            fish.gameObject.SetActive(false);
+            Debug.Log(species.GetName());
         }
-        
+
         lure.SetCast(false);
         lure.transform.position = transform.position;
     }
