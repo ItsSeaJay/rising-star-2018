@@ -14,6 +14,8 @@ public class ControlledRotator : MonoBehaviour
     private bool invertX, invertY, invertZ;
     [SerializeField]
     private bool smooth = false;
+    [SerializeField]
+    private float delay = 1.0f;
 
     private Vector3 startingAngle;
     
@@ -27,6 +29,10 @@ public class ControlledRotator : MonoBehaviour
         if (!smooth)
         {
             RotateDirect();
+        }
+        else
+        {
+            RotateSmooth();
         }
 	}
 
@@ -62,6 +68,43 @@ public class ControlledRotator : MonoBehaviour
             currentAngle.z = -input * amount.z;
         }
 
+        transform.localEulerAngles = currentAngle;
+    }
+
+    void RotateSmooth()
+    {
+        float input = Input.GetAxis(axis);
+        Vector3 currentAngle = startingAngle;
+        Vector3 targetAngle = startingAngle;
+
+        if (rotateX && !invertX)
+        {
+            targetAngle.x = input * amount.x;
+        }
+        else if (rotateX && invertX)
+        {
+            targetAngle.x = -input * amount.x;
+        }
+
+        if (rotateY && !invertY)
+        {
+            targetAngle.y = input * amount.y;
+        }
+        else if (rotateY && invertY)
+        {
+            targetAngle.y = -input * amount.y;
+        }
+
+        if (rotateZ && !invertZ)
+        {
+            targetAngle.z = input * amount.z;
+        }
+        else if (rotateZ && invertZ)
+        {
+            targetAngle.z = -input * amount.z;
+        }
+
+        currentAngle = Vector3.Lerp(currentAngle, targetAngle, delay);
         transform.localEulerAngles = currentAngle;
     }
 }
