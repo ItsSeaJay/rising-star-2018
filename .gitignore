@@ -35,3 +35,6 @@ sysinfo.txt
 *.unitypackage
 
 Source/.vs/Source/v15/Server/sqlite3/
+
+# My own folders used for art assets etc.
+Resources
