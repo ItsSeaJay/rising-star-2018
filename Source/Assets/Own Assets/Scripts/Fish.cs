@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Species))]
 public class Fish : MonoBehaviour
 {
     private enum State
@@ -21,20 +22,11 @@ public class Fish : MonoBehaviour
     }
 
     [SerializeField]
-    private string species = "Dopefish";
+    private Species species;
     [SerializeField]
     private VisionCone visionCone;
     [SerializeField]
     private Range recoilTime;
-    [SerializeField]
-    private float biteTime = 1.0f;
-    [SerializeField]
-    private float speed = 1.0f;
-    [SerializeField]
-    private float acceleration = 0.33f;
-    [SerializeField]
-    [Tooltip("How many times the fish will approach the lure before biting.")]
-    private int nibbles = 1;
 
     private Material material;
     private float velocity = 0;
@@ -60,6 +52,7 @@ public class Fish : MonoBehaviour
             name + "'s vision cone length cannot be negative."
         );
 
+        species = GetComponent<Species>();
         material = GetComponent<Renderer>().material;
 	}
 	
@@ -111,7 +104,7 @@ public class Fish : MonoBehaviour
             default:
                 Debug.LogError
                 (
-                    species + 
+                    species.GetName() + 
                     ' ' + 
                     GetInstanceID().ToString() + 
                     "'s finite state machine broke!"
@@ -122,14 +115,22 @@ public class Fish : MonoBehaviour
 
     private void Swim()
     {
-        velocity = Mathf.Min(speed, velocity + acceleration * Time.deltaTime);
+        velocity = Mathf.Min
+        (
+            species.GetSpeed(),
+            velocity + species.GetAcceleration() * Time.deltaTime
+       );
 
         transform.Translate(0, 0, 1 * velocity * Time.deltaTime);
     }
 
     private void Recoil()
     {
-        velocity = Mathf.Max(-speed, velocity - acceleration * Time.deltaTime);
+        velocity = Mathf.Max
+        (
+            -species.GetSpeed(),
+            velocity - species.GetAcceleration() * Time.deltaTime
+        );
 
         transform.Translate(0, 0, 1 * velocity * Time.deltaTime);
     }
@@ -139,13 +140,13 @@ public class Fish : MonoBehaviour
         state = State.Recoil;
         velocity = 0;
         recoilTimer = Random.Range(recoilTime.min, recoilTime.max);
-        nibbles = Mathf.Max(nibbles - 1, 0);
+        species.SetNibbles(Mathf.Max(species.GetNibbles() - 1, 0));
     }
 
     private void Bite()
     {
         state = State.Hooked;
-        biteTimer = biteTime;
+        biteTimer = species.GetBiteTime();
 
         Lure.GetInstance().SetFish(this);
         Lure.GetInstance().SetHooked(true);
@@ -183,7 +184,7 @@ public class Fish : MonoBehaviour
         {
             if (other.tag == "Hook")
             {
-                if (nibbles > 0)
+                if (species.GetNibbles() > 0)
                 {
                     Nibble();
                 }
@@ -198,7 +199,7 @@ public class Fish : MonoBehaviour
         }
     }
 
-    public string GetSpecies()
+    public Species GetSpecies()
     {
         return this.species;
     }

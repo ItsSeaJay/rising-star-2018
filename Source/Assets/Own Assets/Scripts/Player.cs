@@ -111,7 +111,7 @@ public class Player : MonoBehaviour
     {
         foreach (Fish fish in hold)
         {
-            Debug.Log(fish.GetSpecies());
+            Debug.Log(fish.GetSpecies().GetName());
         }
     }
 
