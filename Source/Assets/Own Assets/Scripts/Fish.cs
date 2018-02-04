@@ -104,11 +104,15 @@ public class Fish : MonoBehaviour
                 TurnRandomly();
                 break;
             case State.Curious:
+                turning = Turn.None;
+
                 Swim();
                 SearchForLure();
                 transform.LookAtXZ(Lure.GetInstance().transform);
                 break;
             case State.Recoil:
+                turning = Turn.None;
+
                 recoilTimer = Mathf.Max(0, recoilTimer - Time.deltaTime);
                 Recoil();
                 transform.LookAtXZ(Lure.GetInstance().transform);
@@ -119,6 +123,8 @@ public class Fish : MonoBehaviour
                 }
                 break;
             case State.Hooked:
+                turning = Turn.None;
+
                 biteTimer = Mathf.Max(0, biteTimer - Time.deltaTime);
 
                 if (biteTimer == 0)

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField]
-    private string sceneToLoad = "Main";
+    private string sceneToLoad = "Game";
     [SerializeField]
     private string startButton = "Fire1";
 
