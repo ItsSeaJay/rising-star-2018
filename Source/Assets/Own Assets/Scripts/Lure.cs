@@ -6,11 +6,12 @@ public class Lure : MonoBehaviour
 {
     [SerializeField]
     private Player player;
+    [SerializeField]
+    private MeshRenderer bobberMesh, hookMesh;
 
     private static Lure instance;
 
     private Fish fish;
-    private MeshRenderer mesh;
     private bool cast = false;
     private bool hooked = false;
 
@@ -26,14 +27,10 @@ public class Lure : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        mesh = GetComponent<MeshRenderer>();
-    }
-
     void Update()
     {
-        mesh.enabled = cast;
+        bobberMesh.enabled = cast;
+        hookMesh.enabled = cast;
 
         float distance = Vector3.Distance
         (
