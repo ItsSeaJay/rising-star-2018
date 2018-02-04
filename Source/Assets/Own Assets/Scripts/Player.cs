@@ -172,8 +172,7 @@ public class Player : MonoBehaviour
             fish.gameObject.SetActive(false);
             Lure.GetInstance().SetHooked(false);
         }
-
-        lure.SetOccupied(false);
+        
         lure.SetCast(false);
         lure.transform.position = transform.position;
     }

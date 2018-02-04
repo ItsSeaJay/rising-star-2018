@@ -94,6 +94,8 @@ public class Fish : MonoBehaviour
 
     private void HandleState()
     {
+        Debug.Log(state.ToString());
+
         switch (state)
         {
             case State.Normal:
@@ -218,7 +220,6 @@ public class Fish : MonoBehaviour
             if (angle < visionCone.radius)
             {
                 state = State.Curious;
-                Lure.GetInstance().SetOccupied(true);
             }
             else
             {
@@ -279,6 +280,9 @@ public class Fish : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Hate");
+        Debug.Log(Lure.GetInstance().GetCast());
+
         if (Lure.GetInstance().GetCast() &&
             state == State.Curious)
         {
