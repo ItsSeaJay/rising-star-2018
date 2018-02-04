@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private enum State
+    {
+        Sailing,
+        Fishing,
+        Scouting
+    };
+
     [SerializeField]
     private float maxSpeed = 4.0f;
     [SerializeField]
@@ -17,12 +24,19 @@ public class Player : MonoBehaviour
     [SerializeField]
     private string fishingButton = "Fire1";
     [SerializeField]
+    private string scoutButton = "Fire2";
+    [SerializeField]
     private Lure lure;
+    [SerializeField]
+    private GameObject thirdPersonCamera, firstPersonCamera;
 
     private List<Species> hold;
     private Vector2 velocity;
+
     private float currentSpeed = 0.0f;
     private float range = 64.0f;
+
+    private State state = State.Sailing;
 
     void Start()
     {
@@ -31,21 +45,73 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Steer();
-        Accelerate();
-        ApplyDirection();
-        Translate();
+        HandleState();
+    }
 
-        if (Input.GetButtonDown(fishingButton))
+    private void HandleState()
+    {
+        switch (state)
         {
-            if (!lure.GetCast())
-            {
-                Cast();
-            }
-            else
-            {
-                Reel();
-            }
+            case State.Sailing:
+                thirdPersonCamera.SetActive(true);
+                firstPersonCamera.SetActive(false);
+                Cursor.lockState = CursorLockMode.None;
+
+                Steer();
+                Accelerate();
+                ApplyDirection();
+                Translate();
+
+                if (Input.GetButtonDown(fishingButton))
+                {
+                    Cast();
+                    state = State.Fishing;
+                }
+
+                if (Input.GetButtonDown(scoutButton))
+                {
+                    state = State.Scouting;
+                }
+                break;
+            case State.Fishing:
+                Steer();
+                Accelerate();
+                ApplyDirection();
+                Translate();
+
+                if (Input.GetButtonDown(fishingButton))
+                {
+                    Reel();
+                    state = State.Sailing;
+                }
+
+                if (Input.GetButtonDown(scoutButton))
+                {
+                    state = State.Scouting;
+                }
+                break;
+            case State.Scouting:
+                thirdPersonCamera.SetActive(false);
+                firstPersonCamera.SetActive(true);
+
+                Steer();
+                Accelerate();
+                ApplyDirection();
+                Translate();
+
+                if (Input.GetButtonUp(scoutButton))
+                {
+                    state = State.Sailing;
+                }
+                break;
+            default:
+                Debug.LogError
+                (
+                    "Player " +
+                    GetInstanceID().ToString() +
+                    "'s finite state machine broke!"
+                );
+                break;
         }
     }
 
