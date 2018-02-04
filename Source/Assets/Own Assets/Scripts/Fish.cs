@@ -80,8 +80,6 @@ public class Fish : MonoBehaviour
         species = GetComponent<Species>();
         material = GetComponent<Renderer>().material;
 
-        transform.Rotate(transform.up, Random.Range(0.0f, 360.0f));
-
         nibbles = species.GetNibbles().max;
         turnTimer = turnTime.max;
         swimTimer = Random.Range(swimTime.min, swimTime.max);
@@ -94,8 +92,6 @@ public class Fish : MonoBehaviour
 
     private void HandleState()
     {
-        Debug.Log(state.ToString());
-
         switch (state)
         {
             case State.Normal:
@@ -280,14 +276,12 @@ public class Fish : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Hate");
-        Debug.Log(Lure.GetInstance().GetCast());
-
         if (Lure.GetInstance().GetCast() &&
             state == State.Curious)
         {
             if (other.tag == "Hook")
             {
+                print("hoo");
                 if (nibbles > 0)
                 {
                     Nibble();

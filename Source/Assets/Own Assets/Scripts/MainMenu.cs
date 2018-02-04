@@ -9,11 +9,6 @@ public class MainMenu : MonoBehaviour
     private string sceneToLoad = "Game";
     [SerializeField]
     private string startButton = "Fire1";
-
-	void Start ()
-    {
-		
-	}
 	
 	void Update ()
     {
