@@ -222,6 +222,10 @@ public class Fish : MonoBehaviour
                 state = State.Normal;
             }
         }
+        else
+        {
+            state = State.Normal;
+        }
     }
 
     private void TurnRandomly()

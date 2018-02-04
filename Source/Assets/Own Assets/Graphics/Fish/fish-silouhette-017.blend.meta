@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: fc2365aba959f3340b7832eeec69b784
-timeCreated: 1517777423
+guid: 9e63d06c7479a4e448c101b03dfa127c
+timeCreated: 1517777985
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -11,6 +11,8 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: Fish
+    7400000: Default Take
+    9500000: //RootNode
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -85,7 +87,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
