@@ -80,6 +80,8 @@ public class Fish : MonoBehaviour
         species = GetComponent<Species>();
         material = GetComponent<Renderer>().material;
 
+        transform.Rotate(Vector3.up, Random.Range(0.0f, 360.0f));
+
         nibbles = species.GetNibbles().max;
         turnTimer = turnTime.max;
         swimTimer = Random.Range(swimTime.min, swimTime.max);
