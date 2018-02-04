@@ -281,7 +281,6 @@ public class Fish : MonoBehaviour
         {
             if (other.tag == "Hook")
             {
-                print("hoo");
                 if (nibbles > 0)
                 {
                     Nibble();
