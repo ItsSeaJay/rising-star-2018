@@ -169,12 +169,11 @@ public class Player : MonoBehaviour
             Fish fish = Lure.GetInstance().GetFish();
             Species species = fish.GetSpecies();
 
-
-
             fish.gameObject.SetActive(false);
-            Debug.Log(species.GetName());
+            Lure.GetInstance().SetHooked(false);
         }
 
+        lure.SetOccupied(false);
         lure.SetCast(false);
         lure.transform.position = transform.position;
     }

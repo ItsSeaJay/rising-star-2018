@@ -14,6 +14,13 @@ public class Fish : MonoBehaviour
         Dive
     }
 
+    private enum Turn
+    {
+        Left,
+        Right,
+        None
+    }
+
     [System.Serializable]
     private struct VisionCone
     {
@@ -25,17 +32,24 @@ public class Fish : MonoBehaviour
     private VisionCone visionCone;
     [SerializeField]
     private Range recoilTime;
+    [SerializeField]
+    private Range swimTime;
+    [SerializeField]
+    private Range turnTime;
 
     private Material material;
     private Species species;
 
     private float velocity = 0;
     private float recoilTimer = 0;
+    private float turnTimer = 0;
     private float biteTimer = 0;
+    private float swimTimer = 0;
     private float nibbles;
     private bool bitten = false;
 
     private State state = State.Normal;
+    private Turn turning = Turn.None;
 
     void Start ()
     {
@@ -47,6 +61,18 @@ public class Fish : MonoBehaviour
 
         Debug.Assert
         (
+            turnTime.max > turnTime.min,
+            name + "'s turn time maximum must be greater than the minimum."
+        );
+
+        Debug.Assert
+        (
+            swimTime.max > swimTime.min,
+            name + "'s swim time maximum must be greater than the minimum."
+        );
+
+        Debug.Assert
+        (
             visionCone.length > 0,
             name + "'s vision cone length cannot be negative."
         );
@@ -54,7 +80,11 @@ public class Fish : MonoBehaviour
         species = GetComponent<Species>();
         material = GetComponent<Renderer>().material;
 
+        transform.Rotate(transform.up, Random.Range(0.0f, 360.0f));
+
         nibbles = species.GetNibbles().max;
+        turnTimer = turnTime.max;
+        swimTimer = Random.Range(swimTime.min, swimTime.max);
 	}
 	
 	void Update ()
@@ -67,8 +97,11 @@ public class Fish : MonoBehaviour
         switch (state)
         {
             case State.Normal:
+                swimTimer = Mathf.Max(0, swimTimer - Time.deltaTime);
+
                 Swim();
                 SearchForLure();
+                TurnRandomly();
                 break;
             case State.Curious:
                 Swim();
@@ -179,11 +212,62 @@ public class Fish : MonoBehaviour
             if (angle < visionCone.radius)
             {
                 state = State.Curious;
+                Lure.GetInstance().SetOccupied(true);
             }
             else
             {
                 state = State.Normal;
             }
+        }
+    }
+
+    private void TurnRandomly()
+    {
+        if (swimTimer <= 0)
+        {
+            // Choose a direction
+            if (turning == Turn.None)
+            {
+                turning = GetRandomDirection();
+                turnTimer = Random.Range(turnTime.min, turnTime.max);
+            }
+
+            // Turn in that direction
+            if (turning == Turn.Left)
+            {
+                transform.Rotate(Vector3.up, -species.GetTorque() * Time.deltaTime);
+            }
+            else
+            {
+                //Turning right
+                transform.Rotate(Vector3.up, species.GetTorque() * Time.deltaTime);
+            }
+
+            // Wait for direction reset
+            if (turning != Turn.None)
+            {
+                turnTimer = Mathf.Max(turnTimer - Time.deltaTime, 0);
+
+                if (turnTimer <= 0)
+                {
+                    swimTimer = Random.Range(turnTime.min, turnTime.max);
+                    turning = Turn.None;
+                }
+            }
+        }
+    }
+
+    private Turn GetRandomDirection()
+    {
+        int go = Mathf.RoundToInt(Random.Range(0, 2));
+
+        if (go == 0)
+        {
+            return Turn.Left;
+        }
+        else
+        {
+            return Turn.Right;
         }
     }
 

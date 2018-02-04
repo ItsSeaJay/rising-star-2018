@@ -15,6 +15,8 @@ public class Species : MonoBehaviour
     [SerializeField]
     private float speed = 1.0f;
     [SerializeField]
+    private float torque = 2.0f;
+    [SerializeField]
     private float acceleration = 0.33f;
     [SerializeField]
     [Tooltip("How many times the fish will approach the lure before biting.")]
@@ -33,6 +35,11 @@ public class Species : MonoBehaviour
     public float GetSpeed()
     {
         return this.speed;
+    }
+
+    public float GetTorque()
+    {
+        return this.torque;
     }
 
     public float GetAcceleration()

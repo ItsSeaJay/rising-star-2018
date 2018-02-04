@@ -14,6 +14,7 @@ public class Lure : MonoBehaviour
     private Fish fish;
     private bool cast = false;
     private bool hooked = false;
+    private bool occupied = false;
 
     void Awake()
     {
@@ -72,5 +73,15 @@ public class Lure : MonoBehaviour
     public void SetHooked(bool hooked)
     {
         this.hooked = hooked;
+    }
+
+    public bool GetOccupied()
+    {
+        return this.occupied;
+    }
+
+    public void SetOccupied(bool occupied)
+    {
+        this.occupied = occupied;
     }
 }
