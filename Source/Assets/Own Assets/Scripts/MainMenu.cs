@@ -1,16 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour {
+public class MainMenu : MonoBehaviour
+{
+    [SerializeField]
+    private string sceneToLoad = "Main";
+    [SerializeField]
+    private string startButton = "Fire1";
 
-	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
 		
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	void Update ()
+    {
+        if (Input.GetButtonDown(startButton))
+        {
+            SceneManager.LoadScene(sceneToLoad);
+        }
 	}
 }

@@ -95,12 +95,21 @@ public class Fish : MonoBehaviour
                 }
                 break;
             case State.Dive:
+                Color faded = new Color(0, 0, 0, 0);
+
                 if (Lure.GetInstance().GetHooked())
                 {
                     Lure.GetInstance().SetHooked(false);
                 }
 
-                transform.Translate(0, -1 * Time.deltaTime, 0);
+                transform.Translate(0, -1 * Time.deltaTime, species.GetSpeed() * Time.deltaTime);
+
+                material.color = Color.Lerp(material.color, faded, Time.deltaTime);
+
+                if (material.color.a <= 0.1f)
+                {
+                    gameObject.SetActive(false);
+                }
                 break;
             default:
                 Debug.LogError
