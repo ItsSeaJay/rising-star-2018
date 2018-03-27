@@ -1,32 +1,18 @@
-# README #
+# Rising Star 2018
 
-This README documents whatever steps are necessary to get your application up and running.
+## Description
+The following is the project I was working on for the Grads in Games Rising Star
+2018 competition. Entrants were tasked with taking a base prototype project from
+start to completion over the course of a few months. Now that the competition is
+over, I feel the need to let other people see how I went about this task.
 
-### What is this repository for? ###
+While this this project wasn't enough to make me a finalist, I did have a lot of
+fun making it, and hopefully someone else can learn something, or perhaps
+attempt to recreate the conditions of the test and do better than I did.
 
-* Search For A Star 2018
-
-### Unity_Project folder? ###
-
-* This folder contains the base Unity project of the game.
-
-### Playable_Demo folder? ###
-
-* This folder contains an .exe file that you can run to play a build version of the core project.
-
-### What are the controls? ###
-
-* Player 1 uses W,A,S,D keys to move and SPACE to jump.
-* Player 2 uses ARROW keys to move and RIGHT CTRL to jump.
-
-### What does the UI represent? ###
-
-* If Player 1 falls into the water Player 2 gets a point and vice versa.
-
-### Do I have to keep the same game mechanics? ###
-
-* No, you can be as creative as you like. :)
-
-### Can I edit the existing code? ###
-
-* Yes, we encourage you to use and edit the existing code to your needs. It must be clear to the assessors though that there is purpose behind these changes and that you fully understand the original source.
+## Credits
+While I wrote most of the code, I have to give a shout-out to
+[Brian Cox](http://www.briancox.be) (not that one) and Dan Dudley, who worked on
+the project prototype that made the basis for the competition, as well as
+[Kenney](https://kenney.nl/) who's art assets are included under a Creative
+Commons Zero (CC0) license.
