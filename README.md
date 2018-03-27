@@ -1,3 +1,4 @@
+![Rising Star Logo](RSlogo-trans-750.png)
 # Rising Star 2018
 
 ## Description
